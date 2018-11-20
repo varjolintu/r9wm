@@ -1,0 +1,8 @@
+[package]
+name = "r9wm"
+version = "0.1.0"
+authors = ["varjolintu <sami.vanttinen@protonmail.com>"]
+
+[dependencies]
+x11 = { version = "*", features = ["xlib"] }
+libc = "*"
