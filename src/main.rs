@@ -82,7 +82,7 @@ fn main() {
 
             		// Open rofi with mod+space
             		if event.key.keycode == XKeysymToKeycode(display, XK_space.into()).into() {
-            			match Command::new("rofl").args(&["-show", "run"]).spawn()  {
+            			match Command::new("rofi").args(&["-show", "run"]).spawn()  {
             				Err(e) => eprintln!("couldn't spawn: {}", e.description()),
         					_ => {}
             			};
