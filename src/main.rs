@@ -76,22 +76,22 @@ fn main() {
                     }
 
                     // Open dmenu with mod+d
-                    if event.key.keycode == XKeysymToKeycode(display, XK_d.into()).into() {
-                        spawn_process(OsStr::new("dmenu_run"));
-                    }
+            		if event.key.keycode == XKeysymToKeycode(display, XK_d.into()).into() {
+            			spawn_process(OsStr::new("dmenu_run"));
+            		}
 
-                    // Open rofi with mod+space
-                    if event.key.keycode == XKeysymToKeycode(display, XK_space.into()).into() {
-                        match Command::new("rofi").args(&["-show", "run"]).spawn()  {
-                            Err(e) => eprintln!("couldn't spawn: {}", e.description()),
-                            _ => {}
-                        };
-                    }
+            		// Open rofi with mod+space
+            		if event.key.keycode == XKeysymToKeycode(display, XK_space.into()).into() {
+            			match Command::new("rofi").args(&["-show", "run"]).spawn()  {
+            				Err(e) => eprintln!("couldn't spawn: {}", e.description()),
+        					_ => {}
+            			};
+            		}
 
-                    // Close r9wm with mod+backspace
-                    if event.key.keycode == XKeysymToKeycode(display, XK_BackSpace.into()).into() {
-                        XCloseDisplay(display);
-                    }
+            		// Close r9wm with mod+backspace
+            		if event.key.keycode == XKeysymToKeycode(display, XK_BackSpace.into()).into() {
+            			XCloseDisplay(display);
+            		}
                 },
                 x11::xlib::ButtonPress => {
                     let xbutton: XButtonEvent = From::from(event);
