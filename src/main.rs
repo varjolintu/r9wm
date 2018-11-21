@@ -19,10 +19,10 @@ use std::ffi::OsStr;
 fn max(a : c_int, b : c_int) -> c_uint { if a > b { a as c_uint } else { b as c_uint } }
 
 fn spawn_process(process: &OsStr) {
-	match Command::new(process).spawn() {
-		Err(e) => eprintln!("couldn't spawn: {}", e.description()),
-		_ => {}
-	};
+    match Command::new(process).spawn() {
+        Err(e) => eprintln!("couldn't spawn: {}", e.description()),
+        _ => {}
+    };
 }
 
 fn main() {
@@ -39,15 +39,15 @@ fn main() {
     }
 
     unsafe {
-    	let shortcuts: Vec<c_uint> = vec![XK_d, XK_q, XK_Return, XK_space, XK_BackSpace];
-	    for key in shortcuts {
-			XGrabKey(display, XKeysymToKeycode(display, key.into()) as c_int, Mod1Mask, XDefaultRootWindow(display), true as c_int, GrabModeAsync, GrabModeAsync);
-		}	
+        let shortcuts: Vec<c_uint> = vec![XK_d, XK_q, XK_Return, XK_space, XK_BackSpace];
+        for key in shortcuts {
+            XGrabKey(display, XKeysymToKeycode(display, key.into()) as c_int, Mod1Mask, XDefaultRootWindow(display), true as c_int, GrabModeAsync, GrabModeAsync);
+        }   
 
         XGrabButton(display, 1, Mod1Mask, XDefaultRootWindow(display), true as c_int,
-        	        (ButtonPressMask|ButtonReleaseMask|PointerMotionMask) as c_uint, GrabModeAsync, GrabModeAsync, 0, 0);
+                    (ButtonPressMask|ButtonReleaseMask|PointerMotionMask) as c_uint, GrabModeAsync, GrabModeAsync, 0, 0);
         XGrabButton(display, 3, Mod1Mask, XDefaultRootWindow(display), true as c_int,
-        	        (ButtonPressMask|ButtonReleaseMask|PointerMotionMask) as c_uint, GrabModeAsync, GrabModeAsync, 0, 0);
+                    (ButtonPressMask|ButtonReleaseMask|PointerMotionMask) as c_uint, GrabModeAsync, GrabModeAsync, 0, 0);
     };
 
     start.subwindow = 0;
@@ -65,33 +65,33 @@ fn main() {
                         XRaiseWindow(display, xkey.subwindow);
 
                         // Close window with mod+q
-	            		if event.key.keycode == XKeysymToKeycode(display, x11::keysym::XK_q.into()).into() {
-	            			XDestroyWindow(display, window);
-	            		}
+                        if event.key.keycode == XKeysymToKeycode(display, x11::keysym::XK_q.into()).into() {
+                            XDestroyWindow(display, window);
+                        }
                     }
 
                     // Open a terminal with mod+enter
                     if event.key.keycode == XKeysymToKeycode(display, XK_Return.into()).into() {
-            			spawn_process(OsStr::new("urxvt"));
-            		}
+                        spawn_process(OsStr::new("urxvt"));
+                    }
 
                     // Open dmenu with mod+d
-            		if event.key.keycode == XKeysymToKeycode(display, XK_d.into()).into() {
-            			spawn_process(OsStr::new("dmenu_run"));
-            		}
+                    if event.key.keycode == XKeysymToKeycode(display, XK_d.into()).into() {
+                        spawn_process(OsStr::new("dmenu_run"));
+                    }
 
-            		// Open rofi with mod+space
-            		if event.key.keycode == XKeysymToKeycode(display, XK_space.into()).into() {
-            			match Command::new("rofl").args(&["-show", "run"]).spawn()  {
-            				Err(e) => eprintln!("couldn't spawn: {}", e.description()),
-        					_ => {}
-            			};
-            		}
+                    // Open rofi with mod+space
+                    if event.key.keycode == XKeysymToKeycode(display, XK_space.into()).into() {
+                        match Command::new("rofi").args(&["-show", "run"]).spawn()  {
+                            Err(e) => eprintln!("couldn't spawn: {}", e.description()),
+                            _ => {}
+                        };
+                    }
 
-            		// Close r9wm with mod+backspace
-            		if event.key.keycode == XKeysymToKeycode(display, XK_BackSpace.into()).into() {
-            			XCloseDisplay(display);
-            		}
+                    // Close r9wm with mod+backspace
+                    if event.key.keycode == XKeysymToKeycode(display, XK_BackSpace.into()).into() {
+                        XCloseDisplay(display);
+                    }
                 },
                 x11::xlib::ButtonPress => {
                     let xbutton: XButtonEvent = From::from(event);
@@ -102,8 +102,8 @@ fn main() {
                 },
                 x11::xlib::MotionNotify => {
                     if start.subwindow != 0 {
-                    	//cursor = XCreateFontCursor(display, 58);
-                    	//XDefineCursor(display, start.subwindow, cursor);
+                        //cursor = XCreateFontCursor(display, 58);
+                        //XDefineCursor(display, start.subwindow, cursor);
                         let xbutton: XButtonEvent = From::from(event);
                         let xdiff: c_int = xbutton.x_root - start.x_root;
                         let ydiff: c_int = xbutton.y_root - start.y_root;
